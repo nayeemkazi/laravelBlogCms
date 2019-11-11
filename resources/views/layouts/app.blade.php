@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/toastr.min.css')}}">
 </head>
 <body>
     <div id="app">
@@ -104,5 +105,22 @@
 
         
     </div>
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="{{asset('js/toastr.min.js')}}"></script>
+<script>
+    @if(Session::has('success'))
+        toastr.success("{{ Session::get('success') }}");
+    
+    @elseif(Session::has('update'))
+        toastr.info("{{ Session::get('update') }}");
+  
+    @elseif(Session::has('destroy'))
+        toastr.error("{{ Session::get('destroy') }}");
+    @endif
+</script>
 </body>
 </html>
