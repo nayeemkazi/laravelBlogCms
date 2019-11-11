@@ -17,10 +17,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::group(['prefix' => 'admin', 'middleware'=>'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+
     Route::get('/post/create', 'PostsController@create')->name('post.create');
     Route::post('/post/store', 'PostsController@store')->name('post.store');
+
+    Route::get('/category/create', 'CategoriesController@create')->name('category.create');
+    Route::post('/category/store', 'CategoriesController@store')->name('category.store');
+    Route::get('/category', 'CategoriesController@index')->name('category.index');
+    Route::get('/category/{id}/edit', 'CategoriesController@edit')->name('category.edit');
+    Route::get('/category/destroy/{id}', 'CategoriesController@destroy')->name('category.destroy');
+    Route::get('/category/update/{id}', 'CategoriesController@update')->name('category.update');
 });
+

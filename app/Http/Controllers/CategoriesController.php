@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
 
-class PostsController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -24,7 +25,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        return view('admin.categories.create');
     }
 
     /**
@@ -35,15 +36,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $this->validate($request, [
-            'title' => 'required|max:255',
-            'featured'=>'required|image',
-            'content'=>'required',
+            'name'=>'required',
         ]);
-
         
+        $category = new Category;
+        $category->name = $request->name;
+        $category->save();
+
+        return redirect()->route('category.index');
     }
 
     /**
@@ -65,7 +66,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::find($id);
+
+        return view("admin.categories.edit", compact('category'));
     }
 
     /**
@@ -77,7 +80,17 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        // dd($request->all());
+        $category = Category::find($id);
+        $category->name = $request->name;
+
+        // dd($request->name);
+        $category->save();
+        $categories= Category::all();
+
+        // return view('admin.categories.index', compact('categories'));
+        return redirect()->route('category.index');
     }
 
     /**
@@ -88,6 +101,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->delete();
+
+        return redirect()->route('category.index');
     }
 }
